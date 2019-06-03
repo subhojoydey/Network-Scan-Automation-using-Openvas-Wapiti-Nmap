@@ -1,0 +1,21 @@
+• OpenVAS http://www.openvas.org/
+• NMAP https://nmap.org/
+• Do what is necessary (post scripts, make configuration changes to the tool, use features of the
+tool, etc) to allow us to meet the following requirements with the output from the tool.
+• Ignore issues that we no longer want to see (because we’ve investigated or simply don’t
+care about that particular issue) in future runs of the tool.
+• No or limited manual steps should be involved in each run of the tool.
+• Combine the data from the scanning tool with other data to form a more complete view of what
+devices are on our networks. The ideal situation would be to have every IP address on each
+VLAN with information as indicated below.
+• IP address (NOC)
+• MAC address (NOC)
+• Date the IP was last seen on the network (NOC)
+• Is it in DNS? (DNS lookup or some other way?)
+• Is it in DHCP? (InfoBlox)
+• If a windows machine, patches waiting to be installed in WSUS? (our server)
+• Domain (AD and/or Ninite)
+• OS version (WSUS and/or Ninite)
+• OS build (Ninite)
+• Ninite related updates (Ninite)
+• Local IP (Ninite)
