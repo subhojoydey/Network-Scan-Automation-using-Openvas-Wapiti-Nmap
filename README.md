@@ -2,12 +2,13 @@
 
 ## Overview
 
-This script focuses on creating a detailed network security report of the whole network it is assigned to search in. This 
-focuses on using a open-source tool like openvas, wapiti and nmap to assess network vulnerability. However this is specifically used to run on Kali Linux which can be used to access older version of Openvas-CLI "omp" rather than "gvm-cli" which require the greenbone paid tool to access the GSA (Greenbone Security Assistant) - the GUI of Openvas. For the use of "gvm-cli" you need to install "gvm-tools" and "python-gvm" from git repositories through socket/ssh/tls connection. 
+This script focuses on automating the creation of a detailed network security report of the whole network it is assigned to search in. This focuses on using a open-source tool like openvas, wapiti and nmap to assess network vulnerability. However this is specifically used to run on Kali Linux which can be used to access older version of Openvas-CLI "omp" rather than "gvm-cli" which require the greenbone paid tool to access the GSA (Greenbone Security Assistant) - the GUI of Openvas. For the use of "gvm-cli" you need to install "gvm-tools" and "python-gvm" from git repositories through socket/ssh/tls connection. 
 
 I would like to bring to your attention that openvas is results in broken installation a lot of time and gives traceback errors in your init file and python versioning errors. Proper installation of openvas through pip-env is recommended and avoid brokern installation. However openvas-check-status is not valid anymore and is not bering updated. 
 
 Thus "omp" is recommended on Kali Linux. Read about "omp" through omp --help.
+
+We finally combine this report and gather other network information to create a detailed report.
 
 ## Pre-Requisites
 
@@ -66,18 +67,35 @@ The omp commands which ae required for basic used:
 * omp -u *** -w *** -F [Check task report formats]
 * omp --username *** --password *** -R "$report_id" -f "$format_id" [Getting the report in the specified format]
 
+### Using wapiti 
 
-* omp --username=" " --password=" " 
-• OpenVAS http://www.openvas.org/
-• NMAP https://nmap.org/
-• Do what is necessary (post scripts, make configuration changes to the tool, use features of the
-tool, etc) to allow us to meet the following requirements with the output from the tool.
-• Ignore issues that we no longer want to see (because we’ve investigated or simply don’t
-care about that particular issue) in future runs of the tool.
-• No or limited manual steps should be involved in each run of the tool.
-• Combine the data from the scanning tool with other data to form a more complete view of what
-devices are on our networks. The ideal situation would be to have every IP address on each
-VLAN with information as indicated below.
+Wapiti is low level vulnerability Scanner of a particular URL and in a particular format.
+* wapiti -u "$URL" -f txt
+
+### IP info in short
+
+* nmcli device show eth0 
+* ls /var/lib/NetworkManager
+* nmap "$IP_ranges"
+* nmap -if list
+* nmap -O -v "$IP_ranges"
+
+## Steps to Automation
+
+* We start by checking of existing openvas service and if not running we jump start the service sonsidering opevas is installed
+* We create a menu of choices for automation
+  * Use previous target?
+  * Create a new target?
+  * Use previous task?
+  * See report already present
+* We create report files from the above choices from the specified choices.
+* We then ask the user if they would continue for wapiti.
+* If yes we provide a wapiti scan report.
+* We then create local map of connected IP-interfaces/DNS/DHCP/MAC
+* After that we ask for the IP ranges for gathering of network information.
+* We use nmap for recording OS and version of the connected networks.
+
+Thus we get have every IP address on each VLAN with information as indicated below.
 • IP address (NOC)
 • MAC address (NOC)
 • Date the IP was last seen on the network (NOC)
